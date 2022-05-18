@@ -1,0 +1,35 @@
+[
+  {
+    "arguments": [
+      "/usr/lib/ccache/bin/cc",
+      "-I/home/einsam/p/simple_file_system/include",
+      "-O2",
+      "-Wall",
+      "-Werror",
+      "-c",
+      "-o",
+      "obj/main.o",
+      "src/main.c"
+    ],
+    "directory": "/home/einsam/p/simple_file_system",
+    "file": "/home/einsam/p/simple_file_system/src/main.c",
+    "output": "/home/einsam/p/simple_file_system/obj/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-O2",
+      "-Wall",
+      "-Werror",
+      "-I/home/einsam/p/simple_file_system/include",
+      "-c",
+      "-fdiagnostics-color",
+      "-o",
+      "obj/main.o",
+      "src/main.c"
+    ],
+    "directory": "/home/einsam/p/simple_file_system",
+    "file": "/home/einsam/p/simple_file_system/src/main.c",
+    "output": "/home/einsam/p/simple_file_system/obj/main.o"
+  }
+]
