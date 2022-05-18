@@ -50,6 +50,9 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c*
 $(DBG_PATH)/%.o: $(SRC_PATH)/%.c*
 	@echo + CC $<
 	$(CC) $(CCOBJFLAGS) $(DBGFLAGS) -o $@ $<
+	$(CC) -E $(INCLUDES) $< | \
+		grep -ve '^#' | \
+		clang-format - > $(basename $@).i
 
 $(TARGET_DEBUG): $(OBJ_DEBUG)
 	@echo + LD $@

@@ -172,13 +172,17 @@ static int menu() {
   if (arg == NULL) {
     /* no argument given */
     for (i = 0; i < CMD_NUM; i ++) {
-      printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
+      printf(ASNI_FMT("%s", ASNI_FG_GREEN), cmd_table[i].name);
+      printf(ASNI_FMT(" - ", ASNI_FG_YELLOW));
+      printf(ASNI_FMT("%s\n", ASNI_FG_BLUE), cmd_table[i].description);
     }
   }
   else {
     for (i = 0; i < CMD_NUM; i ++) {
       if (strcmp(arg, cmd_table[i].name) == 0) {
-        printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
+        printf(ASNI_FMT("%s", ASNI_FG_GREEN), cmd_table[i].name);
+        printf(ASNI_FMT(" - ", ASNI_FG_YELLOW));
+        printf(ASNI_FMT("%s\n", ASNI_FG_BLUE), cmd_table[i].description);
         return 0;
       }
     }
