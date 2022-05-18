@@ -54,3 +54,4 @@ dkms.conf
 bin/*
 
 .cache/clangd/index
+debug

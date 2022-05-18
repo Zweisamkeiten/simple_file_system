@@ -21,4 +21,6 @@
 
 #define ASNI_FMT(str, fmt) fmt str ASNI_NONE
 
+#define ARRLEN(arr) (int)(sizeof(arr) / sizeof(arr[0]))
+
 #endif

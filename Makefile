@@ -1,6 +1,6 @@
 # tool macros
 CC ?= gcc# FILL: the compiler
-CCFLAGS := -O2 -Wall -Werror# FILL: compile flags
+CCFLAGS := -O2 -Wall -Werror -lreadline # FILL: compile flags
 DBGFLAGS := -g
 CCOBJFLAGS := -O2 -Wall -Werror $(CCOBJFLAGS) -c
 
@@ -71,6 +71,7 @@ run: all
 
 .PHONY: debug
 debug: $(TARGET_DEBUG)
+	gdb $(TARGET_DEBUG)
 
 .PHONY: clean
 clean:
