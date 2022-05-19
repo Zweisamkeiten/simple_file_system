@@ -13,11 +13,7 @@
 extern struct CMD_STRUCT cmd_table[];
 extern int CMD_NUM; // The number of commands
 
-char line[128];                 // user input command line
-char command[16], pathname[64]; // command and pathname strings
-char dirname[64], basename[64]; // dirname and basename strings
-
-// void initialize(void);
+bool debug = true; // 启用 Debug
 
 static char *rl_gets() {
   static char *line_read = NULL;
@@ -37,7 +33,7 @@ static char *rl_gets() {
 }
 
 int main(int argc, char *argv[]) {
-  /* initialize();     // initialize root node of the file system tree */
+  initialize(); // initialize root node of the file system tree
 
   for (char *str; (str = rl_gets()) != NULL;) {
     char *str_end = str + strlen(str);
