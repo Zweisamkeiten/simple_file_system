@@ -17,7 +17,8 @@ void initialize(void) {
   myFileSystem.root = new_node("/", T_DIR);
   myFileSystem.cwd = myFileSystem.root;
   strcpy(pathname, myFileSystem.cwd->filename);
-  printf("Initialized OK...\n");
+  printf(ASNI_FMT("FileSystem Initialized...\n", ASNI_FG_CYAN));
+  printf(ASNI_FMT("Welcome!\n", ASNI_FG_CYAN));
 }
 
 void dbname(char *pathname) {
@@ -26,6 +27,24 @@ void dbname(char *pathname) {
   strcpy(dir_name, dirname(temp));
   strcpy(temp, pathname);
   strcpy(base_name, basename(temp));
+}
+
+NODE *parse_pathname(char *pathname) {
+  dbname(pathname);
+  Debug("Debug: dirname = %s, bname = %s\n", dir_name, base_name);
+
+  NODE *node;
+  if (dir_name[0] == '/') {
+    // 绝对路径 从 root 开始解析
+    if (strcmp(dir_name, "/") == 0)
+      node = myFileSystem.root;
+    else
+      node = find_node(myFileSystem.root, dir_name);
+  } else {
+    // 相对路径 从 cwd 开始解析
+    node = find_node(myFileSystem.cwd, dir_name);
+  }
+  return node;
 }
 
 NODE *new_node(char *name, char type) {
@@ -83,7 +102,9 @@ NODE *find_Helper(NODE *cur_node, char *target, char filetype) {
       printf(ASNI_FMT("File %s not found!\n", ASNI_BG_RED), target);
     }
     return cur_node;
+  } else if (strcmp(target, "..") == 0) {
     return cur_node->parent;
+  } else if (strcmp(target, ".") == 0) {
     return cur_node;
   } else if (strcmp(cur_node->filename, target) && cur_node->type == filetype) {
     Debug("Debug: Found %s == %s\n", cur_node->filename, target);

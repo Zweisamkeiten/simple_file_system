@@ -31,6 +31,7 @@ extern NODE *find_Helper(NODE *cur_node, char *target, char filetype);
 extern void pwd_Helper(NODE *cur_node);
 extern void initialize(void);
 extern void dbname(char *pathname);
+extern NODE *parse_pathname(char *pathname);
 
 extern fileSystem myFileSystem;
 
