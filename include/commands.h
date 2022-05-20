@@ -1,5 +1,5 @@
-#ifndef commands_h
-#define commands_h
+#ifndef COMMANDS_H
+#define COMMANDS_H
 
 #include "utils.h"
 

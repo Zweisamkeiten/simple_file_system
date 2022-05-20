@@ -37,7 +37,7 @@ int mkdir(char *args) {
     NODE * dupe_serach = location->child;
     while (dupe_serach != NULL) {
       if (strcmp(dupe_serach->filename, base_name) == 0 && dupe_serach->type == T_DIR) {
-        printf(ASNI_FMT("mkdir: canno create directory '%s': File exists\n", ASNI_FG_RED), pathname);
+        printf(ASNI_FMT("mkdir: cannot create directory '%s': File exists\n", ASNI_FG_RED), pathname);
         return -1;
       }
       dupe_serach = dupe_serach->sibling;

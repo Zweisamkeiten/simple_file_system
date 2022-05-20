@@ -1,5 +1,5 @@
-#ifndef file_system_h
-#define file_system_h
+#ifndef FILE_SYSTEM_H
+#define FILE_SYSTEM_H
 
 typedef struct node {
   char filename[64];                       // Name of file
