@@ -28,6 +28,7 @@ extern NODE *new_node(char *name, char type);
 extern void insert_node(NODE *parent, char *name, char type);
 extern NODE *find_node(NODE *cur_node, char *pathname);
 extern NODE *find_Helper(NODE *cur_node, char *target, char filetype);
+extern void pwd_Helper(NODE *cur_node);
 extern void initialize(void);
 extern void dbname(char *pathname);
 

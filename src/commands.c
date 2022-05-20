@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "commands.h"
+#include "file_system.h"
 #include "utils.h"
 
 struct CMD_STRUCT cmd_table[] = {
@@ -42,7 +43,8 @@ int cd(char *args) {
 }
 
 int pwd() {
-  printf("pwd\n");
+  pwd_Helper(myFileSystem.cwd);
+  printf("\n");
   return 0;
 }
 

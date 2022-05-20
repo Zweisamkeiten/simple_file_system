@@ -83,9 +83,7 @@ NODE *find_Helper(NODE *cur_node, char *target, char filetype) {
       printf(ASNI_FMT("File %s not found!\n", ASNI_BG_RED), target);
     }
     return cur_node;
-  } else if (strcmp(cur_node->filename, "..") == 0) {
     return cur_node->parent;
-  } else if (strcmp(cur_node->filename, ".") == 0) {
     return cur_node;
   } else if (strcmp(cur_node->filename, target) && cur_node->type == filetype) {
     Debug("Debug: Found %s == %s\n", cur_node->filename, target);
@@ -93,5 +91,18 @@ NODE *find_Helper(NODE *cur_node, char *target, char filetype) {
   } else {
     Debug("Debug: Found %s != %s\n", cur_node->filename, target);
     return find_Helper(cur_node->sibling, target, filetype);
+  }
+}
+
+void pwd_Helper(NODE *cur_node) {
+  if (cur_node->filename == myFileSystem.root->filename) {
+    printf("/");
+    return;
+  }
+  pwd_Helper(cur_node->parent);
+  if (cur_node->parent == myFileSystem.root) {
+    printf("%s", cur_node->filename);
+  } else {
+    printf("/%s", cur_node->filename);
   }
 }
