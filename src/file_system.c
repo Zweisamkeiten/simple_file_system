@@ -42,7 +42,12 @@ NODE *parse_pathname(char *pathname) {
       node = find_node(myFileSystem.root, dir_name);
   } else {
     // 相对路径 从 cwd 开始解析
-    node = find_node(myFileSystem.cwd, dir_name);
+    if (strcmp(dir_name, ".") == 0) {
+      node = myFileSystem.cwd;
+    } else if (strcmp(dir_name, "..") == 0) {
+      node = myFileSystem.cwd->parent;
+    } else
+      node = find_node(myFileSystem.cwd, dir_name);
   }
   return node;
 }
@@ -83,7 +88,12 @@ NODE *find_node(NODE *cur_node, char *pathname) {
   // first call strtok
   sub_str = strtok(pathname, "/");
   while (sub_str != NULL) {
-    cur_node = find_Helper(cur_node->child, sub_str, T_DIR);
+    if (strcmp(sub_str, ".") == 0) {
+      cur_node = myFileSystem.cwd;
+    } else if (strcmp(sub_str, "..") == 0) {
+      cur_node = myFileSystem.cwd->parent;
+    } else
+      cur_node = find_Helper(cur_node->child, sub_str, T_DIR);
     if (cur_node == NULL) {
       Debug("Debug: Find_Node failed!");
       break;
@@ -106,7 +116,8 @@ NODE *find_Helper(NODE *cur_node, char *target, char filetype) {
     return cur_node->parent;
   } else if (strcmp(target, ".") == 0) {
     return cur_node;
-  } else if (strcmp(cur_node->filename, target) && cur_node->type == filetype) {
+  } else if (strcmp(cur_node->filename, target) == 0 &&
+             cur_node->type == filetype) {
     Debug("Debug: Found %s == %s\n", cur_node->filename, target);
     return cur_node;
   } else {
