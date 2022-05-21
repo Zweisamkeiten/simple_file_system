@@ -37,7 +37,7 @@ int mkdir(char *args) {
     NODE * dupe_serach = location->child;
     while (dupe_serach != NULL) {
       if (strcmp(dupe_serach->filename, base_name) == 0 && dupe_serach->type == T_DIR) {
-        printf(ASNI_FMT("mkdir: cannot create directory '%s': File exists\n", ASNI_FG_RED), pathname);
+        printf(ASNI_FMT("mkdir: cannot create directory '%s': File exists\n", ASNI_FG_RED), arg);
         return -1;
       }
       dupe_serach = dupe_serach->sibling;
@@ -62,12 +62,15 @@ int ls(char *args) {
   } else {
     dbname(arg);
     node = parse_pathname(arg);
-    node = find_Helper(node->child, base_name, T_DIR);
+    if (node->child != NULL)
+      node = find_Helper(node->child, base_name, T_DIR);
+    else
+      node = node->child;
   }
 
-  if (strcmp(base_name, ".") == 0) {
+  if (arg != NULL && strcmp(base_name, ".") == 0) {
 
-  } else if (strcmp(base_name, "..") == 0) {
+  } else if (arg != NULL && strcmp(base_name, "..") == 0) {
     node = node->parent;
     node = node->child;
   } else {
@@ -81,7 +84,33 @@ int ls(char *args) {
 }
 
 int cd(char *args) {
-  printf("cd\n");
+  char *path = strtok(NULL, " ");
+  NODE *node;
+  dbname(path);
+  if (path != NULL) {
+    dbname(path);
+    node = parse_pathname(path);
+    if (strcmp(base_name, "..") == 0) {
+      if (node->parent != NULL) {
+        node = node->parent;
+      }
+    } else if (strcmp(base_name, ".") == 0) {
+    } else if (strcmp(base_name, "/") == 0) {
+      node = myFileSystem.root;
+    } else {
+      node = find_Helper(node->child, base_name, T_DIR);
+    }
+  }
+  else {
+    node = myFileSystem.root;
+  }
+
+  if (node == NULL) {
+    printf(ASNI_FMT("cd: no such file or directory: %s\n", ASNI_FG_RED), path);
+  }
+
+  myFileSystem.cwd = node;
+
   return 0;
 }
 

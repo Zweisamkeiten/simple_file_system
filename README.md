@@ -3,7 +3,7 @@
 - [x] mkdir
 - [] rmdir
 - [x] ls
-- [] cd
+- [x] cd
 - [x] pwd
 - [x] create
 - [] rm

@@ -16,3 +16,13 @@ create /3/2
 ls /3
 ls /3/
 ls /3/..
+
+cd 1
+ls
+cd ..
+ls .
+cd 2
+cd /
+ls
+cd 3/..
+ls

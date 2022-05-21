@@ -1,0 +1,4 @@
+mkdir 123
+cd 123
+cd ..
+ls
