@@ -54,7 +54,8 @@ int main(int argc, char *argv[]) {
 
     // identify the command;
     // execute the command;
-    for (int i = 0; i < CMD_NUM; i++) {
+    int i;
+    for (i = 0; i < CMD_NUM; i++) {
       // found command: return index i
       if (strcmp(cmd, cmd_table[i].name) == 0) {
         if (cmd_table[i].handler(args) < 0) {
@@ -62,9 +63,10 @@ int main(int argc, char *argv[]) {
         }
         break;
       }
-      if (i == CMD_NUM) {
-        printf("Unknown command '%s'\n", cmd);
-      }
+    }
+
+    if (i == CMD_NUM) {
+      printf("Unknown command '%s'\n", cmd);
     }
   }
 }
