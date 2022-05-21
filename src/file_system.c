@@ -31,7 +31,7 @@ void dbname(char *pathname) {
 
 NODE *parse_pathname(char *pathname) {
   dbname(pathname);
-  Debug("Debug: dirname = %s, bname = %s\n", dir_name, base_name);
+  Debug("Debug: dirname = %s, basename = %s\n", dir_name, base_name);
 
   NODE *node;
   if (dir_name[0] == '/') {
@@ -50,6 +50,16 @@ NODE *parse_pathname(char *pathname) {
       node = find_node(myFileSystem.cwd, dir_name);
   }
   return node;
+}
+
+void print_node(NODE *cur_node){
+    if(cur_node->type == T_DIR){
+        printf(ASNI_FMT("%s\n", ASNI_FG_BLUE), cur_node->filename);
+    }
+    else
+    {
+        printf("%s\n", cur_node->filename);
+    }
 }
 
 NODE *new_node(char *name, char type) {
@@ -116,6 +126,8 @@ NODE *find_Helper(NODE *cur_node, char *target, char filetype) {
     return cur_node->parent;
   } else if (strcmp(target, ".") == 0) {
     return cur_node;
+  } else if (strcmp(target, "/") == 0) {
+    return myFileSystem.root;
   } else if (strcmp(cur_node->filename, target) == 0 &&
              cur_node->type == filetype) {
     Debug("Debug: Found %s == %s\n", cur_node->filename, target);

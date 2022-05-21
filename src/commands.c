@@ -53,7 +53,30 @@ int rmdir(char *args) {
 }
 
 int ls(char *args) {
-  printf("ls\n");
+  char *arg = strtok(NULL, " ");
+
+  NODE *node;
+
+  if (arg == NULL) {
+    node = myFileSystem.cwd;
+  } else {
+    dbname(arg);
+    node = parse_pathname(arg);
+    node = find_Helper(node->child, base_name, T_DIR);
+  }
+
+  if (strcmp(base_name, ".") == 0) {
+
+  } else if (strcmp(base_name, "..") == 0) {
+    node = node->parent;
+    node = node->child;
+  } else {
+    node = node->child;
+  }
+  while (node != NULL) {
+    print_node(node);
+    node = node->sibling;
+  }
   return 0;
 }
 
@@ -69,7 +92,27 @@ int pwd() {
 }
 
 int create(char *args) {
-  printf("create\n");
+  char *arg = strtok(NULL, " ");
+
+  if (arg == NULL) {
+    printf(ASNI_FMT("create: missing operand\n", ASNI_FG_RED));
+  } else {
+    dbname(arg);
+    NODE * location = parse_pathname(arg);
+    if (location == NULL) {
+      printf(ASNI_FMT("create: cannot create file '%s': No such file or directory\n", ASNI_FG_RED), arg);
+      return -1;
+    }
+    NODE * dupe_serach = location->child;
+    while (dupe_serach != NULL) {
+      if (strcmp(dupe_serach->filename, base_name) == 0 && dupe_serach->type == T_FILE) {
+        printf(ASNI_FMT("create: cannot create file '%s': File exists\n", ASNI_FG_RED), pathname);
+        return -1;
+      }
+      dupe_serach = dupe_serach->sibling;
+    }
+    insert_node(location, base_name, T_FILE);
+  }
   return 0;
 }
 

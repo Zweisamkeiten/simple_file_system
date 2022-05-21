@@ -24,6 +24,7 @@ extern char line[];                // user input command line
 extern char command[], pathname[]; // command and pathname strings
 extern char dir_name[], base_name[]; // dirname and basename strings
 
+extern void print_node(NODE *cur_node);
 extern NODE *new_node(char *name, char type);
 extern void insert_node(NODE *parent, char *name, char type);
 extern NODE *find_node(NODE *cur_node, char *pathname);

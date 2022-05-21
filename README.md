@@ -2,10 +2,10 @@
 
 - [x] mkdir
 - [] rmdir
-- [] ls
+- [x] ls
 - [] cd
 - [x] pwd
-- [] create
+- [x] create
 - [] rm
 - [] load
 - [] save
