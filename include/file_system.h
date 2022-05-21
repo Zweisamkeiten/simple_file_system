@@ -20,7 +20,7 @@ typedef struct {
   NODE *root, *cwd;
 } fileSystem;
 
-extern char line[];                // user input command line
+extern char line[]; // user input command line
 /* extern char command[], pathname[]; // command and pathname strings */
 extern char dir_name[], base_name[]; // dirname and basename strings
 

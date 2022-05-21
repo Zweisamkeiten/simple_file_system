@@ -7,7 +7,7 @@
 #include "file_system.h"
 #include "utils.h"
 
-char line[128];                   // user input command line
+char line[128]; // user input command line
 /* char command[16], pathname[64];   // command and pathname strings */
 char dir_name[64], base_name[64]; // dirname and basename strings
 
@@ -52,14 +52,12 @@ NODE *parse_pathname(char *pathname) {
   return node;
 }
 
-void print_node(NODE *cur_node){
-    if(cur_node->type == T_DIR){
-        printf(ASNI_FMT("%s\n", ASNI_FG_BLUE), cur_node->filename);
-    }
-    else
-    {
-        printf("%s\n", cur_node->filename);
-    }
+void print_node(NODE *cur_node) {
+  if (cur_node->type == T_DIR) {
+    printf(ASNI_FMT("%s\n", ASNI_FG_BLUE), cur_node->filename);
+  } else {
+    printf("%s\n", cur_node->filename);
+  }
 }
 
 NODE *new_node(char *name, char type) {

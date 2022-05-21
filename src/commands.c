@@ -29,15 +29,21 @@ int mkdir(char *args) {
     printf(ASNI_FMT("mkdir: missing operand\n", ASNI_FG_RED));
   } else {
     dbname(arg);
-    NODE * location = parse_pathname(arg);
+    NODE *location = parse_pathname(arg);
     if (location == NULL) {
-      printf(ASNI_FMT("mkdir: cannot create directory '%s': No such file or directory\n", ASNI_FG_RED), arg);
+      printf(ASNI_FMT("mkdir: cannot create directory '%s': No such file or "
+                      "directory\n",
+                      ASNI_FG_RED),
+             arg);
       return 1;
     }
-    NODE * dupe_serach = location->child;
+    NODE *dupe_serach = location->child;
     while (dupe_serach != NULL) {
-      if (strcmp(dupe_serach->filename, base_name) == 0 && dupe_serach->type == T_DIR) {
-        printf(ASNI_FMT("mkdir: cannot create directory '%s': File exists\n", ASNI_FG_RED), arg);
+      if (strcmp(dupe_serach->filename, base_name) == 0 &&
+          dupe_serach->type == T_DIR) {
+        printf(ASNI_FMT("mkdir: cannot create directory '%s': File exists\n",
+                        ASNI_FG_RED),
+               arg);
         return 1;
       }
       dupe_serach = dupe_serach->sibling;
@@ -106,8 +112,7 @@ int cd(char *args) {
     } else {
       node = find_Helper(node->child, base_name, T_DIR);
     }
-  }
-  else {
+  } else {
     node = myFileSystem.root;
   }
 
@@ -134,15 +139,21 @@ int create(char *args) {
     printf(ASNI_FMT("create: missing operand\n", ASNI_FG_RED));
   } else {
     dbname(arg);
-    NODE * location = parse_pathname(arg);
+    NODE *location = parse_pathname(arg);
     if (location == NULL) {
-      printf(ASNI_FMT("create: cannot create file '%s': No such file or directory\n", ASNI_FG_RED), arg);
+      printf(ASNI_FMT(
+                 "create: cannot create file '%s': No such file or directory\n",
+                 ASNI_FG_RED),
+             arg);
       return 1;
     }
-    NODE * dupe_serach = location->child;
+    NODE *dupe_serach = location->child;
     while (dupe_serach != NULL) {
-      if (strcmp(dupe_serach->filename, base_name) == 0 && dupe_serach->type == T_FILE) {
-        printf(ASNI_FMT("create: cannot create file '%s': File exists\n", ASNI_FG_RED), arg);
+      if (strcmp(dupe_serach->filename, base_name) == 0 &&
+          dupe_serach->type == T_FILE) {
+        printf(ASNI_FMT("create: cannot create file '%s': File exists\n",
+                        ASNI_FG_RED),
+               arg);
         return -1;
       }
       dupe_serach = dupe_serach->sibling;
