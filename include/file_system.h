@@ -21,7 +21,7 @@ typedef struct {
 } fileSystem;
 
 extern char line[];                // user input command line
-extern char command[], pathname[]; // command and pathname strings
+/* extern char command[], pathname[]; // command and pathname strings */
 extern char dir_name[], base_name[]; // dirname and basename strings
 
 extern void print_node(NODE *cur_node);

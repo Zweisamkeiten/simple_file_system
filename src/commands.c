@@ -32,13 +32,13 @@ int mkdir(char *args) {
     NODE * location = parse_pathname(arg);
     if (location == NULL) {
       printf(ASNI_FMT("mkdir: cannot create directory '%s': No such file or directory\n", ASNI_FG_RED), arg);
-      return -1;
+      return 1;
     }
     NODE * dupe_serach = location->child;
     while (dupe_serach != NULL) {
       if (strcmp(dupe_serach->filename, base_name) == 0 && dupe_serach->type == T_DIR) {
         printf(ASNI_FMT("mkdir: cannot create directory '%s': File exists\n", ASNI_FG_RED), arg);
-        return -1;
+        return 1;
       }
       dupe_serach = dupe_serach->sibling;
     }
@@ -65,14 +65,20 @@ int ls(char *args) {
     if (node->child != NULL)
       node = find_Helper(node->child, base_name, T_DIR);
     else
-      node = node->child;
+      node = find_Helper(node, base_name, T_DIR);
   }
 
   if (arg != NULL && strcmp(base_name, ".") == 0) {
-
+    if (node == myFileSystem.root) {
+      node = node->child;
+    }
   } else if (arg != NULL && strcmp(base_name, "..") == 0) {
-    node = node->parent;
-    node = node->child;
+    if (node == myFileSystem.root) {
+      node = node->child;
+    } else {
+      node = node->parent;
+      node = node->child;
+    }
   } else {
     node = node->child;
   }
@@ -107,6 +113,7 @@ int cd(char *args) {
 
   if (node == NULL) {
     printf(ASNI_FMT("cd: no such file or directory: %s\n", ASNI_FG_RED), path);
+    return 1;
   }
 
   myFileSystem.cwd = node;
@@ -130,12 +137,12 @@ int create(char *args) {
     NODE * location = parse_pathname(arg);
     if (location == NULL) {
       printf(ASNI_FMT("create: cannot create file '%s': No such file or directory\n", ASNI_FG_RED), arg);
-      return -1;
+      return 1;
     }
     NODE * dupe_serach = location->child;
     while (dupe_serach != NULL) {
       if (strcmp(dupe_serach->filename, base_name) == 0 && dupe_serach->type == T_FILE) {
-        printf(ASNI_FMT("create: cannot create file '%s': File exists\n", ASNI_FG_RED), pathname);
+        printf(ASNI_FMT("create: cannot create file '%s': File exists\n", ASNI_FG_RED), arg);
         return -1;
       }
       dupe_serach = dupe_serach->sibling;

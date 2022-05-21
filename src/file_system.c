@@ -8,7 +8,7 @@
 #include "utils.h"
 
 char line[128];                   // user input command line
-char command[16], pathname[64];   // command and pathname strings
+/* char command[16], pathname[64];   // command and pathname strings */
 char dir_name[64], base_name[64]; // dirname and basename strings
 
 fileSystem myFileSystem;
@@ -16,7 +16,7 @@ fileSystem myFileSystem;
 void initialize(void) {
   myFileSystem.root = new_node("/", T_DIR);
   myFileSystem.cwd = myFileSystem.root;
-  strcpy(pathname, myFileSystem.cwd->filename);
+  // strcpy(pathname, myFileSystem.cwd->filename);
   printf(ASNI_FMT("FileSystem Initialized...\n", ASNI_FG_CYAN));
   printf(ASNI_FMT("Welcome!\n", ASNI_FG_CYAN));
 }
