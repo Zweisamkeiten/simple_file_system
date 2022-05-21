@@ -6,7 +6,7 @@
 - [x] cd
 - [x] pwd
 - [x] create
-- [] rm
+- [x] rm
 - [] load
 - [] save
 - [x] menu

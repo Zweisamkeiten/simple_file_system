@@ -174,7 +174,7 @@ int rm(char *args) {
   }
   location = find_Helper(location->child, base_name, T_FILE);
   if (location == NULL) {
-    printf(ASNI_FMT("rm: cannot remove '%s': No such file", ASNI_FG_RED), arg);
+    printf(ASNI_FMT("rm: cannot remove '%s': No such file\n", ASNI_FG_RED), arg);
     return 1;
   }
   if (location->type != T_FILE) {

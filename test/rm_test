@@ -8,9 +8,13 @@ mkdir 123
 create 123
 rm 123
 ls
+ls 123/../123
 
 mkdir 123/2
 create 123/3
 ls 123
 rm 123/3
 ls 123
+rm 123/../123/3
+create 123/3
+rm 123/../123/3

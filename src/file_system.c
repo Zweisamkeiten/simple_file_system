@@ -137,9 +137,8 @@ NODE *find_node(NODE *cur_node, char *pathname) {
   sub_str = strtok(pathname, "/");
   while (sub_str != NULL) {
     if (strcmp(sub_str, ".") == 0) {
-      cur_node = myFileSystem.cwd;
     } else if (strcmp(sub_str, "..") == 0) {
-      cur_node = myFileSystem.cwd->parent;
+      cur_node = cur_node->parent;
     } else
       cur_node = find_Helper(cur_node->child, sub_str, T_DIR);
     if (cur_node == NULL) {
@@ -157,7 +156,7 @@ NODE *find_Helper(NODE *cur_node, char *target, char filetype) {
     if (filetype == T_DIR) {
       printf(ASNI_FMT("Directory %s not found!\n", ASNI_FG_RED), target);
     } else {
-      printf(ASNI_FMT("File %s not found!\n", ASNI_BG_RED), target);
+      printf(ASNI_FMT("File %s not found!\n", ASNI_FG_RED), target);
     }
     return cur_node;
   } else if (strcmp(target, "..") == 0) {
