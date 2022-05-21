@@ -1,7 +1,7 @@
 # simple_file_system
 
 - [x] mkdir
-- [] rmdir
+- [x] rmdir
 - [x] ls
 - [x] cd
 - [x] pwd
