@@ -164,7 +164,25 @@ int create(char *args) {
 }
 
 int rm(char *args) {
-  printf("rm\n");
+  char *arg = strtok(NULL, " ");
+
+  dbname(arg);
+  NODE *location = parse_pathname(arg);
+  if (strcmp(base_name, ".") == 0) {
+    printf(ASNI_FMT("Please provide a valid filename\n", ASNI_FG_RED));
+    return 1;
+  }
+  location = find_Helper(location->child, base_name, T_FILE);
+  if (location == NULL) {
+    printf(ASNI_FMT("rm: cannot remove '%s': No such file", ASNI_FG_RED), arg);
+    return 1;
+  }
+  if (location->type != T_FILE) {
+    printf(ASNI_FMT("rm: cannot remove '%s': Is a directory", ASNI_FG_RED), arg);
+    return 1;
+  }
+
+  delete_node(location);
   return 0;
 }
 

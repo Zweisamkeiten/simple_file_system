@@ -91,6 +91,46 @@ void insert_node(NODE *p, char *name, char type) {
   }
 }
 
+void delete_node(NODE *cur_node) {
+  NODE *parent = cur_node->parent;
+  NODE *node;
+  if (strcmp(cur_node->filename, "/") == 0) {
+    printf(ASNI_FMT("Forbid to delete the root directory\n", ASNI_FG_RED));
+    return;
+  }
+
+  if (parent->child == cur_node) {
+    if (cur_node->sibling == NULL) {
+      parent->child = NULL;
+      delete_Helper(cur_node);
+    } else {
+      parent->child = cur_node->sibling;
+      delete_Helper(cur_node);
+    }
+  } else {
+    node = parent->child;
+    while (node->sibling != cur_node) {
+      node = node->sibling;
+    }
+    node->sibling = cur_node->sibling;
+    delete_Helper(cur_node);
+  }
+}
+
+void delete_Helper(NODE *cur_node) {
+  if (cur_node->child == NULL && cur_node->sibling == NULL) {
+    free(cur_node);
+    return;
+  }
+
+  if (cur_node->sibling != NULL) {
+    delete_Helper(cur_node->sibling);
+  } else {
+    if (cur_node->child == NULL)
+      delete_Helper(cur_node->child);
+  }
+}
+
 NODE *find_node(NODE *cur_node, char *pathname) {
   char *sub_str;
   // first call strtok
