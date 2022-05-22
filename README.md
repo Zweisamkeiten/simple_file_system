@@ -8,6 +8,6 @@
 - [x] create
 - [x] rm
 - [] load
-- [] save
+- [x] save
 - [x] menu
 - [x] quit

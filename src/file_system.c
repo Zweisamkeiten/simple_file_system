@@ -187,3 +187,30 @@ void pwd_Helper(NODE *cur_node) {
     printf("/%s", cur_node->filename);
   }
 }
+
+void fpwd(NODE *cur_node, FILE *fd) {
+  if (cur_node->filename == myFileSystem.root->filename) {
+    fprintf(fd, "/");
+    return;
+  }
+
+  fpwd(cur_node->parent, fd);
+
+  if (cur_node->parent == myFileSystem.root) {
+    fprintf(fd, "%s", cur_node->filename);
+  } else {
+    fprintf(fd, "/%s", cur_node->filename);
+  }
+}
+
+void recursive_print(NODE *cur_node, FILE *fd) {
+  if (cur_node == NULL)
+    return;
+
+  fprintf(fd, "%c\t", cur_node->type);
+  fpwd(cur_node, fd);
+  fprintf(fd, "\n");
+
+  recursive_print(cur_node->child, fd);
+  recursive_print(cur_node->sibling, fd);
+}

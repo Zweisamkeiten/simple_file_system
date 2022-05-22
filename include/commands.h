@@ -11,7 +11,7 @@ extern int pwd();
 extern int create(char *args);
 extern int rm(char *args);
 extern int load();
-extern int save();
+extern int save(char *args);
 extern int menu();
 extern int quit();
 

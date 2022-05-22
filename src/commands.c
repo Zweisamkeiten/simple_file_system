@@ -2,6 +2,7 @@
 #include <string.h>
 
 #include "commands.h"
+#include "debug.h"
 #include "file_system.h"
 #include "utils.h"
 
@@ -215,8 +216,27 @@ int load() {
   return 0;
 }
 
-int save() {
-  printf("save\n");
+int save(char *args) {
+  char *arg = strtok(NULL, " ");
+  char filename[64];
+
+  if (arg == NULL) {
+    /* no argument given */
+    strcpy(filename, "myfilesystem.txt");
+  } else {
+    strcpy(filename, arg);
+  }
+
+  Debug(ASNI_FMT("Saving current filesystem to %s\n", ASNI_FG_YELLOW), filename);
+
+  FILE *fp = fopen(filename, "w+");
+  fprintf(fp, "type\tfilename\n\n");
+  recursive_print(myFileSystem.root, fp);
+
+  fclose(fp);
+
+  Debug(ASNI_FMT("Saved.\n", ASNI_FG_YELLOW));
+
   return 0;
 }
 

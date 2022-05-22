@@ -1,6 +1,8 @@
 #ifndef FILE_SYSTEM_H
 #define FILE_SYSTEM_H
 
+#include <stdio.h>
+
 typedef struct node {
   char filename[64];                       // Name of file
   enum { T_DIR = 'D', T_FILE = 'F' } type; // File type : File or Directory
@@ -32,6 +34,8 @@ extern void delete_Helper(NODE *cur_node);
 extern NODE *find_node(NODE *cur_node, char *pathname);
 extern NODE *find_Helper(NODE *cur_node, char *target, char filetype);
 extern void pwd_Helper(NODE *cur_node);
+extern void fpwd(NODE *cur_node, FILE *fd);
+extern void recursive_print(NODE *cur_node, FILE *fd);
 extern void initialize(void);
 extern void dbname(char *pathname);
 extern NODE *parse_pathname(char *pathname);
