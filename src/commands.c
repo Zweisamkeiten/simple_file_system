@@ -29,28 +29,33 @@ int mkdir(char *args) {
   if (args == NULL) {
     printf(ASNI_FMT("mkdir: missing operand\n", ASNI_FG_RED));
   } else {
-    if (arg == NULL) arg = args;
-    dbname(arg);
-    NODE *location = parse_pathname(arg);
-    if (location == NULL) {
-      printf(ASNI_FMT("mkdir: cannot create directory '%s': No such file or "
-                      "directory\n",
-                      ASNI_FG_RED),
-             arg);
-      return 1;
-    }
-    NODE *dupe_serach = location->child;
-    while (dupe_serach != NULL) {
-      if (strcmp(dupe_serach->filename, base_name) == 0 &&
-          dupe_serach->type == T_DIR) {
-        printf(ASNI_FMT("mkdir: cannot create directory '%s': File exists\n",
+    if (arg == NULL)
+      arg = args;
+    while (arg != NULL) {
+      dbname(arg);
+      NODE *location = parse_pathname(arg);
+      if (location == NULL) {
+        printf(ASNI_FMT("mkdir: cannot create directory '%s': No such file or "
+                        "directory\n",
                         ASNI_FG_RED),
                arg);
         return 1;
       }
-      dupe_serach = dupe_serach->sibling;
+      NODE *dupe_serach = location->child;
+      while (dupe_serach != NULL) {
+        if (strcmp(dupe_serach->filename, base_name) == 0 &&
+            dupe_serach->type == T_DIR) {
+          printf(ASNI_FMT("mkdir: cannot create directory '%s': File exists\n",
+                          ASNI_FG_RED),
+                 arg);
+          return 1;
+        }
+        dupe_serach = dupe_serach->sibling;
+      }
+      insert_node(location, base_name, T_DIR);
+
+      arg = strtok(NULL, " ");
     }
-    insert_node(location, base_name, T_DIR);
   }
   return 0;
 }
@@ -61,19 +66,23 @@ int rmdir(char *args) {
   if (args == NULL) {
     printf(ASNI_FMT("rmdir: missing operand\n", ASNI_FG_RED));
   } else {
-    dbname(arg);
-    NODE *location = parse_pathname(arg);
-    if (strcmp(base_name, ".") == 0) {
-      printf(ASNI_FMT("rmdir: failed to remove '.': Invalid argument\n",
-                      ASNI_FG_RED));
-      return 1;
+    while (arg != NULL) {
+      dbname(arg);
+      NODE *location = parse_pathname(arg);
+      if (strcmp(base_name, ".") == 0) {
+        printf(ASNI_FMT("rmdir: failed to remove '.': Invalid argument\n",
+                        ASNI_FG_RED));
+        return 1;
+      }
+      location = find_Helper(location->child, base_name, T_DIR);
+      if (location->type != T_DIR) {
+        printf(ASNI_FMT("rmidr: cannot remove '%s': Is a file\n", ASNI_FG_RED),
+               arg);
+      }
+      delete_node(location);
+
+      arg = strtok(NULL, " ");
     }
-    location = find_Helper(location->child, base_name, T_DIR);
-    if (location->type != T_DIR) {
-      printf(ASNI_FMT("rmidr: cannot remove '%s': Is a file\n", ASNI_FG_RED),
-             arg);
-    }
-    delete_node(location);
   }
   return 0;
 }
@@ -158,28 +167,34 @@ int create(char *args) {
   if (args == NULL) {
     printf(ASNI_FMT("create: missing operand\n", ASNI_FG_RED));
   } else {
-    if (arg == NULL) arg = args;
-    dbname(arg);
-    NODE *location = parse_pathname(arg);
-    if (location == NULL) {
-      printf(ASNI_FMT(
-                 "create: cannot create file '%s': No such file or directory\n",
-                 ASNI_FG_RED),
-             arg);
-      return 1;
-    }
-    NODE *dupe_serach = location->child;
-    while (dupe_serach != NULL) {
-      if (strcmp(dupe_serach->filename, base_name) == 0 &&
-          dupe_serach->type == T_FILE) {
-        printf(ASNI_FMT("create: cannot create file '%s': File exists\n",
-                        ASNI_FG_RED),
-               arg);
-        return -1;
+    if (arg == NULL)
+      arg = args;
+    while (arg != NULL) {
+      dbname(arg);
+      NODE *location = parse_pathname(arg);
+      if (location == NULL) {
+        printf(
+            ASNI_FMT(
+                "create: cannot create file '%s': No such file or directory\n",
+                ASNI_FG_RED),
+            arg);
+        return 1;
       }
-      dupe_serach = dupe_serach->sibling;
+      NODE *dupe_serach = location->child;
+      while (dupe_serach != NULL) {
+        if (strcmp(dupe_serach->filename, base_name) == 0 &&
+            dupe_serach->type == T_FILE) {
+          printf(ASNI_FMT("create: cannot create file '%s': File exists\n",
+                          ASNI_FG_RED),
+                 arg);
+          return -1;
+        }
+        dupe_serach = dupe_serach->sibling;
+      }
+      insert_node(location, base_name, T_FILE);
+
+      arg = strtok(NULL, " ");
     }
-    insert_node(location, base_name, T_FILE);
   }
   return 0;
 }
@@ -190,25 +205,29 @@ int rm(char *args) {
   if (args == NULL) {
     printf(ASNI_FMT("rm: missing operand\n", ASNI_FG_RED));
   } else {
-    dbname(arg);
-    NODE *location = parse_pathname(arg);
-    if (strcmp(base_name, ".") == 0) {
-      printf(ASNI_FMT("Please provide a valid filename\n", ASNI_FG_RED));
-      return 1;
-    }
-    location = find_Helper(location->child, base_name, T_FILE);
-    if (location == NULL) {
-      printf(ASNI_FMT("rm: cannot remove '%s': No such file\n", ASNI_FG_RED),
-             arg);
-      return 1;
-    }
-    if (location->type != T_FILE) {
-      printf(ASNI_FMT("rm: cannot remove '%s': Is a directory", ASNI_FG_RED),
-             arg);
-      return 1;
-    }
+    while (arg != NULL) {
+      dbname(arg);
+      NODE *location = parse_pathname(arg);
+      if (strcmp(base_name, ".") == 0) {
+        printf(ASNI_FMT("Please provide a valid filename\n", ASNI_FG_RED));
+        return 1;
+      }
+      location = find_Helper(location->child, base_name, T_FILE);
+      if (location == NULL) {
+        printf(ASNI_FMT("rm: cannot remove '%s': No such file\n", ASNI_FG_RED),
+               arg);
+        return 1;
+      }
+      if (location->type != T_FILE) {
+        printf(ASNI_FMT("rm: cannot remove '%s': Is a directory", ASNI_FG_RED),
+               arg);
+        return 1;
+      }
 
-    delete_node(location);
+      delete_node(location);
+
+      arg = strtok(NULL, " ");
+    }
   }
   return 0;
 }
