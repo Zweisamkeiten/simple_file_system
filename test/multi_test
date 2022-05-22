@@ -1,0 +1,10 @@
+mkdir 123 456 789
+ls
+create 123 456 789
+ls
+
+rm 123 789
+ls
+
+rmdir 456 789
+ls
