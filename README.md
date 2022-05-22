@@ -11,3 +11,24 @@
 - [x] save
 - [x] menu
 - [x] quit
+
+## Usage:
+
+### run
+
+```shell
+make
+make run
+```
+
+### debug:
+
+```shell
+make debug
+```
+
+### test
+
+```shell
+make run < test/test
+```
