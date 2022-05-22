@@ -29,3 +29,5 @@ cd /
 ls
 cd 3/..
 ls
+
+save

@@ -7,7 +7,7 @@
 - [x] pwd
 - [x] create
 - [x] rm
-- [] load
+- [x] load
 - [x] save
 - [x] menu
 - [x] quit

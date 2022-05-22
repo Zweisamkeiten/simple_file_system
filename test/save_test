@@ -1,0 +1,18 @@
+mkdir 1
+create 2
+mkdir 3
+mkdir 4
+
+mkdir 1/1
+create ./1/2
+mkdir /1/3
+create /1/../1/3/1
+
+create 3/1
+mkdir 3/2
+
+mkdir 4/1
+mkdir 4/2
+mkdir /4/2/1
+
+save

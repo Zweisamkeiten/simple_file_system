@@ -10,7 +10,7 @@ extern int cd(char *args);
 extern int pwd();
 extern int create(char *args);
 extern int rm(char *args);
-extern int load();
+extern int load(char *args);
 extern int save(char *args);
 extern int menu();
 extern int quit();

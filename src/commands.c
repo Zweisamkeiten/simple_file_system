@@ -26,9 +26,10 @@ int CMD_NUM = NM_CMD;
 int mkdir(char *args) {
   char *arg = strtok(NULL, " ");
 
-  if (arg == NULL) {
+  if (args == NULL) {
     printf(ASNI_FMT("mkdir: missing operand\n", ASNI_FG_RED));
   } else {
+    if (arg == NULL) arg = args;
     dbname(arg);
     NODE *location = parse_pathname(arg);
     if (location == NULL) {
@@ -57,7 +58,7 @@ int mkdir(char *args) {
 int rmdir(char *args) {
   char *arg = strtok(NULL, " ");
 
-  if (arg == NULL) {
+  if (args == NULL) {
     printf(ASNI_FMT("rmdir: missing operand\n", ASNI_FG_RED));
   } else {
     dbname(arg);
@@ -82,7 +83,7 @@ int ls(char *args) {
 
   NODE *node;
 
-  if (arg == NULL) {
+  if (args == NULL) {
     node = myFileSystem.cwd;
   } else {
     dbname(arg);
@@ -154,9 +155,10 @@ int pwd() {
 int create(char *args) {
   char *arg = strtok(NULL, " ");
 
-  if (arg == NULL) {
+  if (args == NULL) {
     printf(ASNI_FMT("create: missing operand\n", ASNI_FG_RED));
   } else {
+    if (arg == NULL) arg = args;
     dbname(arg);
     NODE *location = parse_pathname(arg);
     if (location == NULL) {
@@ -185,7 +187,7 @@ int create(char *args) {
 int rm(char *args) {
   char *arg = strtok(NULL, " ");
 
-  if (arg == NULL) {
+  if (args == NULL) {
     printf(ASNI_FMT("rm: missing operand\n", ASNI_FG_RED));
   } else {
     dbname(arg);
@@ -211,8 +213,47 @@ int rm(char *args) {
   return 0;
 }
 
-int load() {
-  printf("load\n");
+int load(char *args) {
+  char *arg = strtok(NULL, " ");
+  char filename[64];
+
+  if (args == NULL) {
+    /* no argument given */
+    strcpy(filename, "myfilesystem.txt");
+  } else {
+    strcpy(filename, arg);
+  }
+
+  char buf[128], type, path[128];
+
+  FILE *fp = fopen(filename, "r");
+  fgets(buf, 128, fp);
+  fgets(buf, 128, fp);
+  fgets(buf, 128, fp);
+
+  while (fgets(buf, 128, fp)) {
+    buf[strlen(buf) - 1] = '\0';
+    sscanf(buf, "%c\t%s", &type, path);
+
+    Debug("load %c\t%s\n", type, path);
+
+    switch (type) {
+    case 'D':
+      mkdir(path);
+      break;
+    case 'F':
+      create(path);
+      break;
+    default:
+      printf(ASNI_FMT("Loading file '%s' failed\n", ASNI_FG_RED), path);
+    }
+  }
+
+  printf(ASNI_FMT("Filesystem is loaded by file '%s' successfully\n",
+                  ASNI_FG_CYAN),
+         filename);
+  fclose(fp);
+
   return 0;
 }
 
@@ -220,14 +261,15 @@ int save(char *args) {
   char *arg = strtok(NULL, " ");
   char filename[64];
 
-  if (arg == NULL) {
+  if (args == NULL) {
     /* no argument given */
     strcpy(filename, "myfilesystem.txt");
   } else {
     strcpy(filename, arg);
   }
 
-  Debug(ASNI_FMT("Saving current filesystem to %s\n", ASNI_FG_YELLOW), filename);
+  Debug(ASNI_FMT("Saving current filesystem to %s\n", ASNI_FG_YELLOW),
+        filename);
 
   FILE *fp = fopen(filename, "w+");
   fprintf(fp, "type\tfilename\n\n");

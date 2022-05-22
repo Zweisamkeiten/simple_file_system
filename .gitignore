@@ -55,3 +55,5 @@ bin/*
 
 .cache/clangd/index
 debug
+
+compile_commands.json
