@@ -114,6 +114,7 @@ void delete_node(NODE *cur_node) {
       node = node->sibling;
     }
     node->sibling = cur_node->sibling;
+    cur_node->sibling = NULL;
     delete_Helper(cur_node);
   }
 }
