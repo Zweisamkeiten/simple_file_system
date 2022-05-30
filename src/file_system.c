@@ -100,15 +100,19 @@ void delete_node(NODE *cur_node) {
   }
 
   if (parent->child == cur_node) {
+    // 要删除的节点为其父节点的第一个子节点
     if (cur_node->sibling == NULL) {
+      // 如该节点没有兄弟节点
       parent->child = NULL;
       delete_Helper(cur_node);
     } else {
+      // 如有兄弟节点, 则将父节点的第一子节点设为该兄弟节点
       parent->child = cur_node->sibling;
       cur_node->sibling = NULL;
       delete_Helper(cur_node);
     }
   } else {
+    // 如不为第一个子节点, 则遍历其父节点的子节点, 直到找到对应要删除的节点
     node = parent->child;
     while (node->sibling != cur_node) {
       node = node->sibling;
@@ -120,16 +124,22 @@ void delete_node(NODE *cur_node) {
 }
 
 void delete_Helper(NODE *cur_node) {
+  // 递归退出条件
   if (cur_node->child == NULL && cur_node->sibling == NULL) {
     free(cur_node);
     return;
   }
 
+  // 递归删除每一个节点
   if (cur_node->sibling != NULL) {
     delete_Helper(cur_node->sibling);
   } else {
-    if (cur_node->child == NULL)
+    if (cur_node->child != NULL)
       delete_Helper(cur_node->child);
+  }
+
+  if (cur_node->child == NULL && cur_node->sibling == NULL) {
+    free(cur_node);
   }
 }
 
